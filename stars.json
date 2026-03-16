@@ -11,6 +11,7 @@
   "repos": {
     "seventhsite/devops": 0,
     "seventhsite/python-scripts": 0,
-    "seventhsite/routeros-release-bot": 0
+    "seventhsite/routeros-release-bot": 0,
+    "seventhsite/AmneziaWG-client-connection-notification": 3
   }
 }
