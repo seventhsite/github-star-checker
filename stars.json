@@ -1,25 +1,8 @@
 {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  "last_checked": "2026-03-16T17:48:20.191Z",
-=======
-  "last_checked": "2026-03-16T17:50:53.629Z",
->>>>>>> Stashed changes
-=======
-  "last_checked": "2026-03-16T17:53:30.678Z",
->>>>>>> Stashed changes
-  "repos": {
-    "seventhsite/devops": 0,
-    "seventhsite/python-scripts": 0,
-    "seventhsite/routeros-release-bot": 0,
-    "seventhsite/AmneziaWG-client-connection-notification": 3
-=======
-  "last_checked": "2026-03-16T17:56:33.061Z",
+  "last_checked": "2026-03-17T00:24:10.236Z",
   "repos": {
     "seventhsite/devops": 0,
     "seventhsite/python-scripts": 0,
     "seventhsite/routeros-release-bot": 1
->>>>>>> Stashed changes
   }
 }
