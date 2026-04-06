@@ -98,5 +98,10 @@
     "seventhsite/devops": 0,
     "seventhsite/python-scripts": 0,
     "seventhsite/routeros-release-bot": 1
+  },
+  "2026-04-06": {
+    "seventhsite/devops": 0,
+    "seventhsite/python-scripts": 0,
+    "seventhsite/routeros-release-bot": 1
   }
 }
