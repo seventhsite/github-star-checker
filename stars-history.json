@@ -156,5 +156,11 @@
     "seventhsite/python-scripts": 0,
     "seventhsite/routeros-release-bot": 1,
     "seventhsite/us-embassy-alerts-bot": 0
+  },
+  "2026-04-17": {
+    "seventhsite/devops": 0,
+    "seventhsite/python-scripts": 0,
+    "seventhsite/routeros-release-bot": 1,
+    "seventhsite/us-embassy-alerts-bot": 0
   }
 }
