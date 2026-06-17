@@ -1,34 +1,4 @@
 {
-  "2026-05-11": {
-    "seventhsite/devops": 0,
-    "seventhsite/python-scripts": 0,
-    "seventhsite/routeros-release-bot": 1,
-    "seventhsite/us-embassy-alerts-bot": 1
-  },
-  "2026-05-12": {
-    "seventhsite/devops": 0,
-    "seventhsite/python-scripts": 0,
-    "seventhsite/routeros-release-bot": 1,
-    "seventhsite/us-embassy-alerts-bot": 1
-  },
-  "2026-05-13": {
-    "seventhsite/devops": 0,
-    "seventhsite/python-scripts": 0,
-    "seventhsite/routeros-release-bot": 1,
-    "seventhsite/us-embassy-alerts-bot": 1
-  },
-  "2026-05-14": {
-    "seventhsite/devops": 0,
-    "seventhsite/python-scripts": 0,
-    "seventhsite/routeros-release-bot": 1,
-    "seventhsite/us-embassy-alerts-bot": 1
-  },
-  "2026-05-15": {
-    "seventhsite/devops": 0,
-    "seventhsite/python-scripts": 0,
-    "seventhsite/routeros-release-bot": 1,
-    "seventhsite/us-embassy-alerts-bot": 1
-  },
   "2026-05-16": {
     "seventhsite/devops": 0,
     "seventhsite/python-scripts": 0,
@@ -180,6 +150,12 @@
     "seventhsite/us-embassy-alerts-bot": 1
   },
   "2026-06-12": {
+    "seventhsite/devops": 0,
+    "seventhsite/python-scripts": 0,
+    "seventhsite/routeros-release-bot": 1,
+    "seventhsite/us-embassy-alerts-bot": 1
+  },
+  "2026-06-17": {
     "seventhsite/devops": 0,
     "seventhsite/python-scripts": 0,
     "seventhsite/routeros-release-bot": 1,
