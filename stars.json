@@ -1,9 +1,10 @@
 {
-  "last_checked": "2026-06-26T16:07:13.892Z",
+  "last_checked": "2026-06-30T16:11:32.625Z",
   "repos": {
     "seventhsite/devops": 0,
     "seventhsite/python-scripts": 0,
     "seventhsite/routeros-release-bot": 1,
-    "seventhsite/us-embassy-alerts-bot": 1
+    "seventhsite/us-embassy-alerts-bot": 1,
+    "seventhsite/yourls-domain-allowlist": 0
   }
 }
