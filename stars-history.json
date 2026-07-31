@@ -1,10 +1,4 @@
 {
-  "2026-06-26": {
-    "seventhsite/devops": 0,
-    "seventhsite/python-scripts": 0,
-    "seventhsite/routeros-release-bot": 1,
-    "seventhsite/us-embassy-alerts-bot": 1
-  },
   "2026-06-30": {
     "seventhsite/devops": 0,
     "seventhsite/python-scripts": 0,
@@ -62,6 +56,13 @@
     "seventhsite/yourls-domain-allowlist": 0
   },
   "2026-07-28": {
+    "seventhsite/devops": 0,
+    "seventhsite/python-scripts": 0,
+    "seventhsite/routeros-release-bot": 1,
+    "seventhsite/us-embassy-alerts-bot": 1,
+    "seventhsite/yourls-domain-allowlist": 0
+  },
+  "2026-07-31": {
     "seventhsite/devops": 0,
     "seventhsite/python-scripts": 0,
     "seventhsite/routeros-release-bot": 1,
