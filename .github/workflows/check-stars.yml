@@ -49,7 +49,7 @@ jobs:
   check-stars:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           token: ${{ secrets.STAR_MONITOR_TOKEN }}
 
@@ -82,7 +82,7 @@ jobs:
 
       - name: Check stars
         id: check
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           github-token: ${{ secrets.STAR_MONITOR_TOKEN }}
           script: |
@@ -252,7 +252,7 @@ jobs:
 
       - name: Create GitHub Issue (alert)
         if: steps.check.outputs.has_changes == 'true' && (env.NOTIFICATION_CHANNEL == 'issue' || env.NOTIFICATION_CHANNEL == 'both')
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           ISSUE_TITLE: ${{ steps.check.outputs.subject }}
           ISSUE_BODY: ${{ steps.check.outputs.body }}
@@ -268,7 +268,7 @@ jobs:
 
       - name: Send email notification (alert)
         if: steps.check.outputs.has_changes == 'true' && (env.NOTIFICATION_CHANNEL == 'gmail' || env.NOTIFICATION_CHANNEL == 'both')
-        uses: dawidd6/action-send-mail@v3
+        uses: dawidd6/action-send-mail@v22
         with:
           server_address: smtp.gmail.com
           server_port: 465
@@ -282,7 +282,7 @@ jobs:
 
       - name: Create GitHub Issue (report)
         if: steps.check.outputs.has_report == 'true' && (env.NOTIFICATION_CHANNEL == 'issue' || env.NOTIFICATION_CHANNEL == 'both')
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           ISSUE_TITLE: ${{ steps.check.outputs.report_subject }}
           ISSUE_BODY: ${{ steps.check.outputs.report_body }}
@@ -298,7 +298,7 @@ jobs:
 
       - name: Send email notification (report)
         if: steps.check.outputs.has_report == 'true' && (env.NOTIFICATION_CHANNEL == 'gmail' || env.NOTIFICATION_CHANNEL == 'both')
-        uses: dawidd6/action-send-mail@v3
+        uses: dawidd6/action-send-mail@v22
         with:
           server_address: smtp.gmail.com
           server_port: 465
