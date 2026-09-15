@@ -3,8 +3,8 @@ const { readFileSync } = require('node:fs');
 const { join } = require('node:path');
 const test = require('node:test');
 
-// The cron here is sparse (Tuesdays and Fridays), so the trigger must fire on the first
-// run of a new week/month rather than on a fixed weekday and hour that never comes up.
+// The trigger fires on the first run of a new week/month, so it holds whatever the cron
+// is: an hourly schedule that drifts past 00:xx, or a sparse one that skips Mondays.
 const workflow = readFileSync(join(__dirname, '../workflows/check-stars.yml'), 'utf8');
 const block = workflow.match(/            \/\/ Date-based dedup:[\s\S]*?const isMonthly = .*\n/)[0].replace(/^            /gm, '');
 const evaluate = new Function('now', 'data', 'manualReport', `${block}\nreturn { isWeekly, isMonthly };`);

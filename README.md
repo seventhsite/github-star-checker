@@ -102,7 +102,7 @@ Checked at: 2026-02-18T12:13:19Z
 
 ## Usage & Limits
 
-GitHub Actions free tier provides 2,000 minutes/month. This workflow takes ~10 seconds per run, so the default hourly schedule uses ~75 minutes/month.
+GitHub Actions is free and unmetered for public repositories, so the hourly schedule costs nothing there. In a private repository the free tier provides 2,000 minutes/month and every run is billed rounded up to a full minute, so an hourly schedule consumes ~720 minutes/month even though a run takes ~10 seconds.
 
 ## File Structure
 

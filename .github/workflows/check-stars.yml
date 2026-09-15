@@ -2,7 +2,7 @@ name: Check GitHub Stars
 
 on:
   schedule:
-    - cron: '23 15 * * 2,5'
+    - cron: '0 * * * *'
   workflow_dispatch:
     inputs:
       schedule:
@@ -190,8 +190,8 @@ jobs:
             // Generate weekly/monthly report
             const now = new Date();
             const manualReport = '${{ inputs.report }}';
-            // Date-based dedup: fire on the first run of a new week/month rather than at an
-            // exact weekday and hour, which a sparse cron (and Actions scheduling delays) never hits.
+            // Date-based dedup: fire on the first run of a new week/month rather than at an exact
+            // weekday and hour, a slot Actions scheduling delays skip and a sparse cron never hits.
             const mondayOfThisWeek = new Date(now);
             mondayOfThisWeek.setUTCDate(now.getUTCDate() - ((now.getUTCDay() + 6) % 7));
             const mondayStr = mondayOfThisWeek.toISOString().slice(0, 10);

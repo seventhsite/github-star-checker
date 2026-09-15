@@ -11,7 +11,7 @@ GitHub star monitoring tool that runs as a GitHub Actions workflow. Every hour b
 - **Single workflow**: `.github/workflows/check-stars.yml` — contains all logic inline via `actions/github-script@v7`
 - **Data store**: `stars.json` (latest snapshot + `last_weekly_report`/`last_monthly_report` dedup dates) + `stars-history.json` (daily snapshots, 32-day retention for weekly/monthly reports) — persisted via git commit by the workflow itself
 - **Notifications**: Configurable via `NOTIFICATION_CHANNEL` env — `issue` (default), `gmail`, or `both`. Changeable via `workflow_dispatch`. Alerts are appended as comments to one `star-notification` issue per UTC month, located by a `<!-- star-notification-month:YYYY-MM -->` marker in the issue body; reports create their own issues with the `star-report` label
-- **Reports**: Weekly and monthly star summary reports fire on the first run of a new week (Mon-based) or month, deduped by date in `stars.json` rather than by weekday/hour — the cron is sparse (Tue/Fri), so an hour-exact trigger would never match. Can also be triggered manually via `workflow_dispatch` report input
+- **Reports**: Weekly and monthly star summary reports fire on the first run of a new week (Mon-based) or month, deduped by date in `stars.json` rather than by weekday/hour — an hour-exact trigger is missed whenever Actions delays the 00:xx slot, and never matches at all on a sparse cron. Can also be triggered manually via `workflow_dispatch` report input
 - First run initializes `stars.json` without creating notifications
 
 ## Workflow Steps
