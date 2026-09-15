@@ -21,7 +21,7 @@ flowchart LR
 2. Fetches star counts for all public, non-fork repositories you own
 3. Compares with previous counts stored in `stars.json`
 4. Sends notifications on changes — GitHub Issue (default) or Gmail, switchable via `workflow_dispatch`
-5. Generates weekly (Monday) and monthly (1st) star reports
+5. Generates weekly and monthly star reports on the first run of each new week / month
 6. Commits updated `stars.json` back to the repository
 
 On the first run, it only records current counts — no notifications are sent.
@@ -65,6 +65,10 @@ gh secret set STAR_MONITOR_TOKEN
 ## Notification Examples
 
 ### GitHub Issue
+
+Star changes are appended as comments to one `star-notification` issue per UTC calendar month, created when the first change is detected (for example **⭐ Star Alerts (2026-09)**). Each comment carries the repositories, star deltas, total stars, and check timestamp. The monthly issue is reused even after it is closed, so keep its label and the month marker in its body intact.
+
+Gmail still sends a separate email for each detected change when enabled, and weekly/monthly reports remain standalone issues. The screenshot below shows the alert content, which is now recorded in a comment.
 
 <table><tr><td>
 <img src=".github/assets/screenshot-issue-alert.png" alt="Star notification issue" width="600">

@@ -21,7 +21,7 @@ flowchart LR
 2. 소유한 공개, 비포크(non-fork) 레포지토리의 스타 수를 조회
 3. `stars.json`에 기록된 이전 수치와 비교
 4. 스타 변화 시 알림 — GitHub Issue(기본) 또는 Gmail, `workflow_dispatch`로 변경 가능
-5. 주간(월요일) / 월간(매월 1일) 스타 리포트 자동 생성
+5. 새로운 주 / 새로운 달의 첫 실행 때 주간 / 월간 스타 리포트 자동 생성
 6. 갱신된 `stars.json`을 커밋하여 레포지토리에 반영
 
 첫 실행 시에는 현재 스타 수만 기록하고 알림을 발송하지 않습니다.
@@ -65,6 +65,10 @@ gh secret set STAR_MONITOR_TOKEN
 ## 알림 예시
 
 ### GitHub Issue
+
+스타 변화는 UTC 기준 달마다 하나씩 생성되는 `star-notification` 이슈(예: **⭐ Star Alerts (2026-09)**)에 댓글로 쌓입니다. 이슈는 그 달의 첫 변화가 감지될 때 만들어지며, 각 댓글에는 레포지토리 목록, 스타 증감, 전체 스타 수, 확인 시각이 담깁니다. 닫힌 이슈도 그대로 재사용되므로 라벨과 본문의 월 마커를 지우지 마세요.
+
+Gmail 알림은 변화마다 개별 메일로 계속 발송되고, 주간 / 월간 리포트도 별도 이슈로 유지됩니다. 아래 스크린샷의 알림 내용이 이제 댓글로 기록됩니다.
 
 <table><tr><td>
 <img src=".github/assets/screenshot-issue-alert.png" alt="Star notification issue" width="600">

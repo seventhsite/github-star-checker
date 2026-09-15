@@ -42,6 +42,10 @@ permissions:
   contents: write
   issues: write
 
+concurrency:
+  group: star-monitor
+  cancel-in-progress: false
+
 env:
   NOTIFICATION_CHANNEL: issue  # issue | gmail | both
 
@@ -146,6 +150,7 @@ jobs:
               const body = lines.join('\n');
               const checkedAt = new Date().toISOString();
               core.setOutput('has_changes', 'true');
+              core.setOutput('checked_at', checkedAt);
               core.setOutput('subject', subject);
               core.setOutput('body', `${body}\n\nTotal stars: ${totalStars}\nChecked at: ${checkedAt}`);
             } else {
@@ -153,13 +158,13 @@ jobs:
               if (isFirstRun) core.info('First run — skipping notifications.');
             }
 
-            // Write updated data
+            // Build updated data (written after report logic)
             const data = {
               last_checked: new Date().toISOString(),
+              last_weekly_report: previous.last_weekly_report || null,
+              last_monthly_report: previous.last_monthly_report || null,
               repos: current,
             };
-            fs.writeFileSync(dataPath, JSON.stringify(data, null, 2) + '\n');
-            core.info(`Updated stars.json with ${Object.keys(current).length} repos.`);
 
             // Save daily snapshot to history
             const historyPath = 'stars-history.json';
@@ -185,8 +190,15 @@ jobs:
             // Generate weekly/monthly report
             const now = new Date();
             const manualReport = '${{ inputs.report }}';
-            const isWeekly = manualReport === 'weekly' || (now.getUTCDay() === 1 && now.getUTCHours() === 0);
-            const isMonthly = manualReport === 'monthly' || (now.getUTCDate() === 1 && now.getUTCHours() === 0);
+            // Date-based dedup: fire on the first run of a new week/month rather than at an
+            // exact weekday and hour, which a sparse cron (and Actions scheduling delays) never hits.
+            const mondayOfThisWeek = new Date(now);
+            mondayOfThisWeek.setUTCDate(now.getUTCDate() - ((now.getUTCDay() + 6) % 7));
+            const mondayStr = mondayOfThisWeek.toISOString().slice(0, 10);
+            const firstOfMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}-01`;
+
+            const isWeekly = manualReport === 'weekly' || (data.last_weekly_report || '') < mondayStr;
+            const isMonthly = manualReport === 'monthly' || (data.last_monthly_report || '') < firstOfMonth;
 
             if (isWeekly || isMonthly) {
               const periodDays = isMonthly ? 30 : 7;
@@ -242,6 +254,9 @@ jobs:
                 core.setOutput('report_subject', `⭐ ${periodLabel} Star Report (${startSnapshot} ~ ${today})`);
                 core.setOutput('report_body', reportLines.join('\n'));
                 core.info(`Generated ${periodLabel.toLowerCase()} report.`);
+
+                if (isWeekly) data.last_weekly_report = today;
+                if (isMonthly) data.last_monthly_report = today;
               } else {
                 core.info('Not enough history data for report yet.');
                 core.setOutput('has_report', 'false');
@@ -250,20 +265,47 @@ jobs:
               core.setOutput('has_report', 'false');
             }
 
-      - name: Create GitHub Issue (alert)
+            // Write stars.json after report logic so report dates are included
+            fs.writeFileSync(dataPath, JSON.stringify(data, null, 2) + '\n');
+            core.info(`Updated stars.json with ${Object.keys(current).length} repos.`);
+
+      - name: Append monthly GitHub Issue comment (alert)
         if: steps.check.outputs.has_changes == 'true' && (env.NOTIFICATION_CHANNEL == 'issue' || env.NOTIFICATION_CHANNEL == 'both')
         uses: actions/github-script@v9
         env:
+          CHECKED_AT: ${{ steps.check.outputs.checked_at }}
           ISSUE_TITLE: ${{ steps.check.outputs.subject }}
           ISSUE_BODY: ${{ steps.check.outputs.body }}
         with:
           script: |
-            await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: process.env.ISSUE_TITLE,
-              body: process.env.ISSUE_BODY,
-              labels: ['star-notification'],
+            const { owner, repo } = context.repo;
+            const month = process.env.CHECKED_AT.slice(0, 7);
+            const marker = `<!-- star-notification-month:${month} -->`;
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'all',
+              labels: 'star-notification',
+              per_page: 100,
+            });
+            let monthlyIssue = issues.find(issue => !issue.pull_request && issue.body?.includes(marker));
+
+            if (!monthlyIssue) {
+              const { data } = await github.rest.issues.create({
+                owner,
+                repo,
+                title: `⭐ Star Alerts (${month})`,
+                body: `${marker}\n\nStar changes detected in ${month} (UTC) are recorded as comments below.\n\nGmail alerts are sent separately when enabled. Weekly and monthly reports remain separate issues.`,
+                labels: ['star-notification'],
+              });
+              monthlyIssue = data;
+            }
+
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: monthlyIssue.number,
+              body: `## ${process.env.ISSUE_TITLE}\n\n${process.env.ISSUE_BODY}`,
             });
 
       - name: Send email notification (alert)
@@ -311,6 +353,8 @@ jobs:
           to: ${{ secrets.NOTIFY_EMAIL }}
 
       - name: Commit and push
+        # Notification failures must not leave stale state that triggers duplicate alerts.
+        if: ${{ !cancelled() && steps.check.outcome == 'success' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
