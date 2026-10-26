@@ -251,6 +251,7 @@ jobs:
                 if (unchanged > 0) reportLines.push(`📦 ${unchanged} repo(s) unchanged.`);
 
                 core.setOutput('has_report', 'true');
+                core.setOutput('report_has_changes', repoChanges.length > 0 ? 'true' : 'false');
                 core.setOutput('report_subject', `⭐ ${periodLabel} Star Report (${startSnapshot} ~ ${today})`);
                 core.setOutput('report_body', reportLines.join('\n'));
                 core.info(`Generated ${periodLabel.toLowerCase()} report.`);
@@ -339,7 +340,7 @@ jobs:
             });
 
       - name: Send email notification (report)
-        if: steps.check.outputs.has_report == 'true' && (env.NOTIFICATION_CHANNEL == 'gmail' || env.NOTIFICATION_CHANNEL == 'both')
+        if: steps.check.outputs.has_report == 'true' && (steps.check.outputs.report_has_changes == 'true' || inputs.report != '') && (env.NOTIFICATION_CHANNEL == 'gmail' || env.NOTIFICATION_CHANNEL == 'both')
         uses: dawidd6/action-send-mail@v22
         with:
           server_address: smtp.gmail.com
