@@ -1,11 +1,7 @@
 {
-<<<<<<< Updated upstream
-  "last_checked": "2026-11-10T09:12:49.900Z",
-=======
-  "last_checked": "2026-11-10T13:50:27.442Z",
->>>>>>> Stashed changes
-  "last_weekly_report": "2026-11-09",
-  "last_monthly_report": "2026-11-01",
+  "last_checked": "2026-11-10T17:27:57.647Z",
+  "last_weekly_report": "2026-11-10",
+  "last_monthly_report": "2026-11-10",
   "repos": {
     "seventhsite/devops": 0,
     "seventhsite/python-scripts": 0,
